@@ -18,11 +18,11 @@ func TestDummyLogic(t *testing.T) {
 		// 	Input:          5,
 		// 	ExpectedOutput: "less than 10",
 		// },
-		// {
-		// 	Name:           "less than 20",
-		// 	Input:          15,
-		// 	ExpectedOutput: "less than 20",
-		// },
+		{
+			Name:           "less than 20",
+			Input:          15,
+			ExpectedOutput: "less than 20",
+		},
 		// {
 		// 	Name:           "more than 20",
 		// 	Input:          25,
