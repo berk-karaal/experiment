@@ -7,5 +7,5 @@ import (
 
 func main() {
 	fmt.Println("Starting the app")
-	dummylogic.DummyLogic(5)
+	dummylogic.DummyLogic(6)
 }
