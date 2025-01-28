@@ -23,11 +23,11 @@ func TestDummyLogic(t *testing.T) {
 			Input:          15,
 			ExpectedOutput: "less than 20",
 		},
-		// {
-		// 	Name:           "more than 20",
-		// 	Input:          25,
-		// 	ExpectedOutput: "more than 20",
-		// },
+		{
+			Name:           "more than 20",
+			Input:          25,
+			ExpectedOutput: "more than 20",
+		},
 	}
 
 	for _, tc := range testcases {
