@@ -24,14 +24,16 @@ jobs:
           # Run tests with coverage
           go test -coverprofile=coverage.out ./...
           # Generate HTML report
-          mkdir -p coverage-report
-          go tool cover -html=coverage.out -o coverage-report/index.html
+          mkdir -p coverage-report/${{ github.event.pull_request.head.sha }}
+          go tool cover -html=coverage.out -o coverage-report/${{ github.event.pull_request.head.sha }}/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./coverage-report
+          # Writing over pr-<pr_number> directory to keep only the latest coverage report for each
+          # PR. Also using last commit sha to avoid caching issues.
           destination_dir: coverage/pr-${{ github.event.number }}
           commit_message: "Coverage report for PR ${{ github.event.number }}"
 
@@ -42,7 +44,7 @@ jobs:
           # `github.sha` variable is the merge commit sha instead of the last commit sha.
           # See: https://github.com/orgs/community/discussions/26325
           message: |
-            Coverage report is available [here](https://berkkaraal.com/experiment/coverage/pr-${{ github.event.number }}/index.html).
+            Coverage report is available [here](https://berkkaraal.com/experiment/coverage/pr-${{ github.event.number }}/${{ github.event.pull_request.head.sha }}/index.html).
 
             Last commit: ${{ github.event.pull_request.head.sha }}
           comment-tag: execution
