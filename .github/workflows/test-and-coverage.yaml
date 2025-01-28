@@ -38,8 +38,11 @@ jobs:
       - name: Comment on Pull Request
         uses: thollander/actions-comment-pull-request@v3
         with:
+          # We use `github.event.pull_request.head.sha` variable because in pull requests,
+          # `github.sha` variable is the merge commit sha instead of the last commit sha.
+          # See: https://github.com/orgs/community/discussions/26325
           message: |
             Coverage report is available [here](https://berkkaraal.com/experiment/coverage/pr-${{ github.event.number }}/index.html).
 
-            Last commit: ${{ github.sha }}
+            Last commit: ${{ github.event.pull_request.head.sha }}
           comment-tag: execution
