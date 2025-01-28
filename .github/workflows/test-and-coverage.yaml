@@ -8,6 +8,7 @@ jobs:
   test-and-coverage:
     permissions:
       contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -23,13 +24,31 @@ jobs:
           # Run tests with coverage
           go test -coverprofile=coverage.out ./...
           # Generate HTML report
-          mkdir -p coverage-report
-          go tool cover -html=coverage.out -o coverage-report/index.html
+          mkdir -p coverage-report/${{ github.event.pull_request.head.sha }}
+          go tool cover -html=coverage.out -o coverage-report/${{ github.event.pull_request.head.sha }}/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./coverage-report
+          # We are adding last commit sha to the url to prevent seeing cached or not updated
+          # coverage report. When a user clicks to the coverage report url, it will definitely see
+          # the correct coverage report for the last commit.
+          #
+          # Writing over pr-<pr_number> directory to keep only the latest coverage report for each
+          # PR.
           destination_dir: coverage/pr-${{ github.event.number }}
           commit_message: "Coverage report for PR ${{ github.event.number }}"
+
+      - name: Comment on Pull Request
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          # We use `github.event.pull_request.head.sha` variable because in pull requests,
+          # `github.sha` variable is the merge commit sha instead of the last commit sha.
+          # See: https://github.com/orgs/community/discussions/26325
+          message: |
+            Coverage report is available [here](https://berkkaraal.com/experiment/coverage/pr-${{ github.event.number }}/${{ github.event.pull_request.head.sha }}/index.html).
+
+            Last commit: ${{ github.event.pull_request.head.sha }}
+          comment-tag: execution
