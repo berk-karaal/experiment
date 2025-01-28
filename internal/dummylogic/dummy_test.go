@@ -13,11 +13,11 @@ func TestDummyLogic(t *testing.T) {
 	}
 
 	testcases := []testcase{
-		// {
-		// 	Name:           "less than 10",
-		// 	Input:          5,
-		// 	ExpectedOutput: "less than 10",
-		// },
+		{
+			Name:           "less than 10",
+			Input:          5,
+			ExpectedOutput: "less than 10",
+		},
 		{
 			Name:           "less than 20",
 			Input:          15,
