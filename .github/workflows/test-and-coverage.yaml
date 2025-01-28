@@ -8,6 +8,7 @@ jobs:
   test-and-coverage:
     permissions:
       contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -33,3 +34,12 @@ jobs:
           publish_dir: ./coverage-report
           destination_dir: coverage/pr-${{ github.event.number }}
           commit_message: "Coverage report for PR ${{ github.event.number }}"
+
+      - name: Comment on Pull Request
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+            Coverage report is available [here](https://berkkaraal.com/experiment/coverage/pr-${{ github.event.number }}/index.html).
+
+            Last commit: ${{ github.sha }}
+          comment-tag: execution
