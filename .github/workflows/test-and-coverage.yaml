@@ -32,8 +32,12 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./coverage-report
+          # We are adding last commit sha to the url to prevent seeing cached or not updated
+          # coverage report. When a user clicks to the coverage report url, it will definitely see
+          # the correct coverage report for the last commit.
+          #
           # Writing over pr-<pr_number> directory to keep only the latest coverage report for each
-          # PR. Also using last commit sha to avoid caching issues.
+          # PR.
           destination_dir: coverage/pr-${{ github.event.number }}
           commit_message: "Coverage report for PR ${{ github.event.number }}"
 
