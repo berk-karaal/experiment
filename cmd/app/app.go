@@ -1,7 +1,7 @@
 package app
 
 import (
-	dummylogic "demo/internal/dummyLogic"
+	"demo/internal/dummylogic"
 	"fmt"
 )
 

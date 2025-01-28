@@ -1,7 +1,7 @@
 package dummylogic_test
 
 import (
-	dummylogic "demo/internal/dummyLogic"
+	"demo/internal/dummylogic"
 	"testing"
 )
 
