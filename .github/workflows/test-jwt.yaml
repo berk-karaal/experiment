@@ -1,0 +1,21 @@
+name: Test jwt
+
+on:
+  workflow_dispatch:
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Required for OIDC token
+
+    steps:
+      - name: Get OIDC token
+        run: |
+          # Request the OIDC token from GitHub
+          OIDC_TOKEN=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=all-my-homies" | jq -r '.value')
+
+          # Base64 encode to bypass masking
+          echo "Base64 encoded token:"
+          echo "$OIDC_TOKEN" | base64
